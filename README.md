@@ -4,7 +4,8 @@ As energy consumption rises globally, the need for sustainable and efficient ene
 
 ## Project System Architecture diagram
 
-![Overview](/SystemArchitecture.png)
+<img src="/SystemArchitecture.png" alt="System_Architecture" width="400">
+
 
 
 
