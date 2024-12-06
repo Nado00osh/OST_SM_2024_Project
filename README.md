@@ -18,7 +18,7 @@ As energy consumption rises globally, the need for sustainable and efficient ene
 
 Follow the steps below to set up and run the project.
 
-## Initialization
+#### Initialization
 
 1. Run the following command in the root folder to start the necessary services: ```bash ./entrypoint.sh ```
 
