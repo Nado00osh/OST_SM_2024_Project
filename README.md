@@ -38,7 +38,7 @@ Example models include:
   - KMeans_Model.py  
   - One_Class_SVM.py  
 
-#### Data storage
+#### Data storage and batch processing
 5. InfluxDB is used for storing the processed data. You can access its GUI at:
 
   - URL: http://localhost:8086
