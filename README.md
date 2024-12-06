@@ -22,7 +22,6 @@ Follow the steps below to set up and run the project.
 
 1. Run the following command in the root folder to start the necessary services:
 
-```bash
 ./entrypoint.sh
 
 This script will:
