@@ -20,25 +20,23 @@ Follow the steps below to set up and run the project.
 
 ## Initialization
 
-1. Run the following command in the root folder to start the necessary services:
-
-```bash ./entrypoint.sh ```
+1. Run the following command in the root folder to start the necessary services: ```bash ./entrypoint.sh ```
 
 This script will:
-    - Install the required libraries and dependencies.
-    - Launch the Docker containers using docker-compose.
+    - Install the required libraries and dependencies.  
+    - Launch the Docker containers using docker-compose.  
 
-2. After the containers are up, navigate to the Spark directory:
-  cd spark
-3. Run the Kafka feature extraction script:
-  python3 kafka_to_features.py
+2. After the containers are up, navigate to the Spark directory:  ``` cd spark ```
+ 
+3. Run the Kafka feature extraction script: ``` python3 kafka_to_features.py ```
+    
 4. Once the features are processed, you can run the desired model. Replace <model_name> with one of the available model scripts:
-  python3 <model_name>.py
-Example models include:
-  - Gaussian_Mixture_Model.py
-  - Isolation_Forest_Model.py
-  - KMeans_Model.py
-  - One_Class_SVM.py
+   ``` python3 <model_name>.py ```
+Example models include:  
+  - Gaussian_Mixture_Model.py  
+  - Isolation_Forest_Model.py  
+  - KMeans_Model.py  
+  - One_Class_SVM.py  
 
 #### Data storage
 5. InfluxDB is used for storing the processed data. You can access its GUI at:
@@ -55,10 +53,10 @@ After logging in, generate an all-access API token from the API Tokens section a
 #### Visualization
 7. Grafana is used for creating real-time dashboards. Access Grafana at:
 
-  - URL: http://localhost:3000
-  - Default credentials:
-  - Username: admin
-  - Password: admin
+  - URL: http://localhost:3000  
+  - Default credentials:  
+  - Username: admin  
+  - Password: admin  
 
 Add a new InfluxDB data source in Grafana:
 
