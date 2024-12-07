@@ -1,0 +1,431 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 3,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 1000
+              },
+              {
+                "color": "orange",
+                "value": 1800
+              },
+              {
+                "color": "semi-dark-red",
+                "value": 2000
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 7,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "loZLL54Nz"
+          },
+          "query": "SELECT sum(\"z1_energy_kW\") AS \"z1(kW)\", \n       sum(\"z2_energy_kW\") AS \"z2(kW)\", \n       sum(\"z3_energy_kW\") AS \"z3(kW)\", \n       sum(\"z4_energy_kW\") AS \"z4(kW)\", \n       sum(\"z5_energy_kW\") AS \"z5(kW)\" \nFROM \"aggregated_abnormal_data\" \nWHERE \"season\" = 'winter' AND time > now() - 1d\nGROUP BY time(5m)\n",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Total Energy Consumption by Zone (Winter)",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "fillOpacity": 57,
+            "lineWidth": 2,
+            "spanNulls": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 9,
+        "x": 7,
+        "y": 0
+      },
+      "id": 8,
+      "options": {
+        "alignValue": "right",
+        "legend": {
+          "displayMode": "hidden",
+          "placement": "right"
+        },
+        "mergeValues": true,
+        "rowHeight": 0.76,
+        "showValue": "never",
+        "tooltip": {
+          "mode": "none",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.4.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "loZLL54Nz"
+          },
+          "query": "SELECT mean(\"z1_energy_kW\") AS \"z1_avg(kW)\", \n       mean(\"z2_energy_kW\") AS \"z2_avg(kW)\", \n       mean(\"z3_energy_kW\") AS \"z3_avg(kW)\", \n       mean(\"z4_energy_kW\") AS \"z4_avg(kW)\", \n       mean(\"z5_energy_kW\") AS \"z5_avg(kW)\"\nFROM \"aggregated_abnormal_data\"\nWHERE \"season\" = 'winter'\nGROUP BY time(5m)\n",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Average Energy Consumption per Zone over Time in Winter Season",
+      "type": "state-timeline"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 16,
+        "y": 0
+      },
+      "id": 10,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "8.4.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "loZLL54Nz"
+          },
+          "query": "\nSELECT COUNT(\"prediction\") AS \"Abnormal Count\"\nFROM \"abnormal_data_isolation_forest2\"\nWHERE \"prediction\" = -1\nAND time >= now() - 80m\nGROUP BY time(1h)\n",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Abnormal Consumption Count",
+      "type": "gauge"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "mappings": [],
+          "max": 300,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "kwatt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 22,
+        "x": 0,
+        "y": 5
+      },
+      "id": 12,
+      "options": {
+        "displayMode": "lcd",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "text": {}
+      },
+      "pluginVersion": "8.4.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "loZLL54Nz"
+          },
+          "query": "SELECT \n    SUM(\"z1_AC2(kW)\") + SUM(\"z1_AC3(kW)\") + SUM(\"z1_Plug(kW)\") AS \"z1_norm(kW)\"\nFROM \"abnormal_data_isolation_forest\"\nWHERE \"prediction\" = 1  -- النورمال\nGROUP BY time(1m)\n",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "loZLL54Nz"
+          },
+          "hide": false,
+          "query": "SELECT \n    SUM(\"z1_AC2(kW)\") + SUM(\"z1_AC3(kW)\") + SUM(\"z1_Plug(kW)\") AS \"z1_abnorm(kW)\"\nFROM \"abnormal_data_isolation_forest\"\nWHERE \"prediction\" = -1  -- الابنورمال\nGROUP BY time(1m)\n",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "loZLL54Nz"
+          },
+          "hide": false,
+          "query": "SELECT \n    SUM(\"z2_AC1(kW)\") + SUM(\"z2_Light(kW)\") + SUM(\"z2_Plug(kW)\") AS \"z2_norm(kW)\"\nFROM \"abnormal_data_isolation_forest\"\nWHERE \"prediction\" = 1  -- النورمال\nGROUP BY time(1m)\n",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "loZLL54Nz"
+          },
+          "hide": false,
+          "query": "SELECT \n    SUM(\"z2_AC1(kW)\") + SUM(\"z2_Light(kW)\") + SUM(\"z2_Plug(kW)\") AS \"z2_abnorm(kW)\"\nFROM \"abnormal_data_isolation_forest\"\nWHERE \"prediction\" = -1  -- الابنورمال\nGROUP BY time(1m)\n",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "loZLL54Nz"
+          },
+          "hide": false,
+          "query": "SELECT \n    SUM(\"z3_Light(kW)\") + SUM(\"z3_Plug(kW)\") AS \"z3_norm(kW)\"\nFROM \"abnormal_data_isolation_forest\"\nWHERE \"prediction\" = 1  -- النورمال\nGROUP BY time(1m)\n",
+          "rawQuery": true,
+          "refId": "E",
+          "resultFormat": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "loZLL54Nz"
+          },
+          "hide": false,
+          "query": "SELECT \n    SUM(\"z3_Light(kW)\") + SUM(\"z3_Plug(kW)\") AS \"z3_abnorm(kW)\"\nFROM \"abnormal_data_isolation_forest\"\nWHERE \"prediction\" = -1  -- الابنورمال\nGROUP BY time(1m)\n",
+          "rawQuery": true,
+          "refId": "F",
+          "resultFormat": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "loZLL54Nz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \n    SUM(\"z4_AC1(kW)\") + SUM(\"z4_Light(kW)\") + SUM(\"z4_Plug(kW)\") AS \"z4_norm(kW)\"\nFROM \"abnormal_data_isolation_forest\"\nWHERE \"prediction\" = 1  -- النورمال\nGROUP BY time(1m)\n",
+          "rawQuery": true,
+          "refId": "G",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "loZLL54Nz"
+          },
+          "hide": false,
+          "query": "SELECT \n    SUM(\"z4_AC1(kW)\") + SUM(\"z4_Light(kW)\") + SUM(\"z4_Plug(kW)\") AS \"z4_abnorm(kW)\"\nFROM \"abnormal_data_isolation_forest\"\nWHERE \"prediction\" = -1  -- الابنورمال\nGROUP BY time(1m)\n",
+          "rawQuery": true,
+          "refId": "H",
+          "resultFormat": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "loZLL54Nz"
+          },
+          "hide": false,
+          "query": "SELECT \n    SUM(\"z5_AC1(kW)\") + SUM(\"z5_Light(kW)\") + SUM(\"z5_Plug(kW)\") AS \"z5_norm(kW)\"\nFROM \"abnormal_data_isolation_forest\"\nWHERE \"prediction\" = 1  -- النورمال\nGROUP BY time(1m)\n",
+          "rawQuery": true,
+          "refId": "I",
+          "resultFormat": "table"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "loZLL54Nz"
+          },
+          "hide": false,
+          "query": "SELECT \n    SUM(\"z5_AC1(kW)\") + SUM(\"z5_Light(kW)\") + SUM(\"z5_Plug(kW)\") AS \"z5_abnorm(kW)\"\nFROM \"abnormal_data_isolation_forest\"\nWHERE \"prediction\" = -1  -- الابنورمال\nGROUP BY time(1m)\n",
+          "rawQuery": true,
+          "refId": "J",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Energy Consumption Comparison (Normal vs Abnormal) per Zone",
+      "type": "bargauge"
+    }
+  ],
+  "schemaVersion": 35,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-12h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Detailed Feature Analysis2",
+  "uid": "DK66pg7Hk2",
+  "version": 3,
+  "weekStart": ""
+}
