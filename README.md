@@ -51,7 +51,7 @@ Follow the steps below to set up and run the project.
    - `KMeans_Model.py`  
    - `One_Class_SVM.py`
 
-#### Data storage and batch processing
+#### Data storage
 5. InfluxDB is used for storing the processed data. You can access its GUI at:
 
   - URL: http://localhost:8086
@@ -61,7 +61,7 @@ Follow the steps below to set up and run the project.
 After logging in, generate an all-access API token from the API Tokens section and save it securely.
 
 #### Abnormal Energy Detection
-6. We have implemented four abnormal energy detection models, all of which can be found in the models folder: **Gaussian Mixture Model, Isolation Forest, KMeans, and One-Class SVM.** The models consume data streams directly from Kafka, where they analyze patterns of energy consumption to identify deviations indicative of abnormal usage. Once the analysis is complete, the results are sent to InfluxDB for efficient storage and further analysis, enabling seamless integration with visualization tools like Grafana for real-time insights.
+6. We have implemented four abnormal energy detection models, all of which can be found in the Spark folder: **Gaussian Mixture Model, Isolation Forest, KMeans, and One-Class SVM.** The models consume data streams directly from Kafka, where they analyze patterns of energy consumption to identify deviations indicative of abnormal usage. Once the analysis is complete, the results are sent to InfluxDB for efficient storage and further analysis, enabling seamless integration with visualization tools like Grafana for real-time insights.
 
 #### Visualization
 7. Grafana is used for creating real-time dashboards. Access Grafana at:
@@ -73,15 +73,14 @@ After logging in, generate an all-access API token from the API Tokens section a
 
 Add a new InfluxDB data source in Grafana:
 
-  - Query language: Flux
+  - Query language: InfluxQL
   - URL: http://influxdb:8086
-  - Organization: 
-  - Token: Use the InfluxDB API token you generated earlier.
-  - Default Bucket:
+  - Database: iber
+  - user: admin
+  - Password: admin
 
-Save the data source and start building dashboards to visualize energy trends, detected abnormalities, and other metrics.
+Save the data source and build dashboards to visualize energy trends, detect abnormalities, and other metrics.
 
-#### Final Notes
-- Ensure that all .env variables (e.g., Kafka and InfluxDB configurations) are properly set before starting the services.
-- The time range of stored data corresponds to the original timestamps from the CU-BEMS dataset. Set your dashboards to display this range for accurate visualizations.
-- Check the visualizations folder for preconfigured Grafana.
+### Conclusion
+
+This project uses stream mining and machine learning to optimize real-time energy consumption by analyzing user behavior and environmental data. With Apache Kafka for data streaming, Apache Spark for processing, and machine learning models for abnormal energy detection, the system improves energy efficiency. InfluxDB stores the data, and Grafana provides real-time visualizations, enabling better decision-making for sustainable energy management.
