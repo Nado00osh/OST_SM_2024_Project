@@ -24,7 +24,7 @@ Follow the steps below to set up and run the project.
 1. **Start the Necessary Services**  
    Run the following command in the root folder to start the services:  
    ```bash  
-   batch entrypoint.sh  
+   bash entrypoint.sh  
    ```  
    This script will:
    - Install the required Python libraries and dependencies from `requirements.txt` file.  
