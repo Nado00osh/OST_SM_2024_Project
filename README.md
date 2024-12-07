@@ -12,31 +12,43 @@ As energy consumption rises globally, the need for sustainable and efficient ene
 - Abnormal energy detection models: Gaussian Mixture Model, Isolation Forest, KMeans, and One-Class SVM.
 - Data storage with InfluxDB.
 - Real-time dashboards and visualizations with Grafana.
-- Batch processing and model retraining for adaptive energy reduction.
+- Batch processing and model pretraining for adaptive energy reduction.
 
 ## Getting Started
 
 Follow the steps below to set up and run the project.
 
-#### Initialization
 
-1. Run the following command in the root folder to start the necessary services: ```bash ./entrypoint.sh ```  
+#### Setup and Initialization
 
-    This script will:  
-    - Install the required libraries and dependencies.  
-    - Launch the Docker containers using docker-compose.  
+1. **Start the Necessary Services**  
+   Run the following command in the root folder to start the services:  
+   ```bash  
+   ./entrypoint.sh  
+   ```  
+   This script will:
+   - Install the required Python libraries and dependencies from `requirements.txt` file.  
+   - Launch the necessary Docker containers using the `docker-compose.yml` file.  
+   - Initialize the Kafka producer to stream data from the CSV file to the Kafka cluster in real time.
 
-2. After the containers are up, navigate to the Spark directory:  ``` cd spark ```
- 
-3. Run the Kafka feature extraction script: ``` python3 kafka_to_features.py ```
-    
-4. Once the features are processed, you can run the desired model. Replace <model_name> with one of the available model scripts:
-   ``` python3 <model_name>.py ```
-Example models include:  
-  - Gaussian_Mixture_Model.py  
-  - Isolation_Forest_Model.py  
-  - KMeans_Model.py  
-  - One_Class_SVM.py  
+2. **Run the Kafka Consumer for Data Processing**  
+   Once the containers are up and running, run the Kafka consumer script to consume the data from Kafka for further processing in Spark:  
+   ```bash  
+   cd spark  
+   python3 kafka_to_features.py  
+   ```  
+   This script will consume the data from Kafka and make it ready for processing in Spark.
+
+3. **Run the Desired Model**  
+   Once the data is consumed and processed, you can run any of the available models. Replace `<model_name>` with the model script you wish to use:  
+   ```bash  
+   python3 <model_name>.py  
+   ```  
+   Example models include:  
+   - `Gaussian_Mixture_Model.py`  
+   - `Isolation_Forest_Model.py`  
+   - `KMeans_Model.py`  
+   - `One_Class_SVM.py`
 
 #### Data storage and batch processing
 5. InfluxDB is used for storing the processed data. You can access its GUI at:
