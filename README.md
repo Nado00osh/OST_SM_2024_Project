@@ -81,6 +81,6 @@ Add a new InfluxDB data source in Grafana:
 
 Save the data source and build dashboards to visualize energy trends, detect abnormalities, and other metrics.
 
-### Conclusion
+## Conclusion
 
 This project uses stream mining and machine learning to optimize real-time energy consumption by analyzing user behavior and environmental data. With Apache Kafka for data streaming, Apache Spark for processing, and machine learning models for abnormal energy detection, the system improves energy efficiency. InfluxDB stores the data, and Grafana provides real-time visualizations, enabling better decision-making for sustainable energy management.
