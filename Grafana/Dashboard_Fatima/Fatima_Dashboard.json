@@ -1,0 +1,263 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 5,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "description": " a pie chart to show the distribution of anomalies across different zones (z1 to z5).",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "watt"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "hiddenSeries": false,
+      "id": 4,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.4.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "loZLL54Nz"
+          },
+          "hide": false,
+          "query": "SELECT sum(\"z1_AC2(kW)\") + sum(\"z1_AC3(kW)\") + sum(\"z1_Plug(kW)\") AS \"z1_total_energy\",\n       sum(\"z2_AC1(kW)\") + sum(\"z2_Light(kW)\") + sum(\"z2_Plug(kW)\") AS \"z2_total_energy\",\n       sum(\"z3_Light(kW)\") + sum(\"z3_Plug(kW)\") AS \"z3_total_energy\",\n       sum(\"z4_AC1(kW)\") + sum(\"z4_Light(kW)\") + sum(\"z4_Plug(kW)\") AS \"z4_total_energy\",\n       sum(\"z5_AC1(kW)\") + sum(\"z5_Light(kW)\") + sum(\"z5_Plug(kW)\") AS \"z5_total_energy\"\nFROM \"abnormal_data_kmeans\"\nWHERE time >= now() - 2h\nGROUP BY time(1m)\n",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "table"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Total Energy Consumption by Zone (Overall)",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "watt",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "description": "Plot a time series of prediction (1 if anomaly, 0 if normal) over time.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 100,
+            "gradientMode": "hue",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "percent"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.4.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "s8SM7g7Hk"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "10m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "anomaly_data",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"z1_AC2(kW)\") + sum(\"z1_AC3(kW)\") + sum(\"z1_Plug(kW)\") AS \"z1_total_energy\",\n       sum(\"z2_AC1(kW)\") + sum(\"z2_Light(kW)\") + sum(\"z2_Plug(kW)\") AS \"z2_total_energy\",\n       sum(\"z3_Light(kW)\") + sum(\"z3_Plug(kW)\") AS \"z3_total_energy\",\n       sum(\"z4_AC1(kW)\") + sum(\"z4_Light(kW)\") + sum(\"z4_Plug(kW)\") AS \"z4_total_energy\",\n       sum(\"z5_AC1(kW)\") + sum(\"z5_Light(kW)\") + sum(\"z5_Plug(kW)\") AS \"z5_total_energy\"\nFROM \"abnormal_data_kmeans\"\nWHERE \"prediction\" = 1\nAND time > now() - 1h\nGROUP BY time(1m)\n",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "prediction"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "bucket",
+              "operator": "=",
+              "value": "iber/autogen"
+            }
+          ]
+        }
+      ],
+      "title": "Abnormal Energy Consumption ",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 35,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Detection Overview2",
+  "uid": "kAqPFg7Nk2",
+  "version": 2,
+  "weekStart": ""
+}
