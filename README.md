@@ -41,7 +41,8 @@ Follow the steps below to set up and run the project.
 
 3. **Run the Desired Model**  
    Once the data is consumed and processed, you can run any of the available models. Replace `<model_name>` with the model script you wish to use:  
-   ```bash  
+   ```bash
+   cd spark
    python3 <model_name>.py  
    ```  
    Example models include:  
